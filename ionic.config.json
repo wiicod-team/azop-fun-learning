@@ -1,0 +1,7 @@
+{
+  "name": "azop-fun-learning",
+  "type": "angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
