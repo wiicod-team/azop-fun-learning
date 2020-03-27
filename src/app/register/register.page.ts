@@ -29,10 +29,16 @@ export class RegisterPage implements OnInit {
       validationData: []  //optional
       })
       .then(
-        data => console.log(data),
-        data => this.router.navigateByUrl('/code')
+        data => {
+          console.log(data);
+          this.error='';
+          this.router.navigateByUrl('/code');
+        }
       )
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        this.error=err.message;
+      });
   }
   constructor(private router:Router) { }
 

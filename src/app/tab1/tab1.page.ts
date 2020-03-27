@@ -12,7 +12,7 @@ export class Tab1Page {
   constructor(private router:Router) {}
 
   logout(){
-    console.log("there");
+    console.log("there logout");
     Auth.currentAuthenticatedUser({
       bypassCache: false  
       // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
@@ -21,9 +21,10 @@ export class Tab1Page {
 
     Auth.signOut({ global: true })
     .then(
-      data => console.log(data),
-      data => this.router.navigateByUrl('/')
-      )
+      data => {
+        console.log(data);
+        this.router.navigateByUrl('/');
+      })
     .catch(err => console.log(err));
   }
 }
