@@ -1,13 +1,22 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      Welcome
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-content padding>
-    <amplify-authenticator framework="ionic"></amplify-authenticator>
+<!-- <ion-content [fullscreen]="true"> -->
+  <ion-content class="auth-form">
+    <ion-grid>
+      <ion-row justify-content-center>
+        <ion-col align-self-center >
+          <div text-center>
+            <h3 class="title">Vous vous etes bien connecté bienvenue dans l'application Fun-Learning</h3>
+          </div>
+          <ion-button (click)="logout()" expand="block" color="danger">Log Out</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-content>
-</ion-content>
+<!-- </ion-content> -->

@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Verification code</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <form #form="ngForm" (ngSubmit)="verificationCode(form)">
+    <ion-grid>
+      <ion-row  justify-content-center>
+        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+          <br>
+          <div padding>
+            <ion-item lines="full">
+              <ion-label position="floating">Phone number</ion-label>
+              <ion-input name="username" type="text" [(ngModel)]="code.username" ngModel required></ion-input>
+            </ion-item>
+            <ion-item lines="full">
+              <ion-label position="floating">Code</ion-label>
+              <ion-input name="code" type="text" [(ngModel)]="code.code" ngModel required></ion-input>
+            </ion-item>
+          </div>
+          <br>
+          <div padding>
+            <ion-button  size="large" type="submit"  [disabled]="form.invalid" expand="block">Send</ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+  <ion-grid>
+    <ion-row align-self-center size-md="6" size-lg="5" size-xs="12">
+        <div text-center class="text">
+            Please <a (click)="resend()">resend code !</a> 
+        </div>
+    </ion-row>
+  </ion-grid>
+</ion-content>

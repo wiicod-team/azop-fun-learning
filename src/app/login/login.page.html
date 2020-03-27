@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <form #form="ngForm" (ngSubmit)="doLogin(form)">
+    <ion-grid>
+        <ion-row justify-content-center>
+          <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+            <br>
+            <div padding>
+              <ion-item lines="full">
+                <ion-label position="floating">Phone number</ion-label>
+                <ion-input name="phone" type="text" [(ngModel)]="login.phone" ngModel required></ion-input>
+              </ion-item>
+
+              <ion-item lines="full">
+                <ion-label position="floating">Password</ion-label>
+                <ion-input name="password" type="password" [(ngModel)]="login.password" ngModel required></ion-input>
+              </ion-item>
+            </div>
+            <br>
+            <div padding>
+              <ion-button  size="large" type="submit"  [disabled]="form.invalid" expand="block">Sign In</ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row align-self-center size-md="6" size-lg="5" size-xs="12">
+            <div text-center class="text">
+          If you don't have an account, please <a routerLink='/register'>
+            register</a> first!
+            </div>
+        </ion-row>
+        <ion-row align-self-center size-md="6" size-lg="5" size-xs="12" color="danger">
+            <div text-center class="text error">{{error}}</div>
+        </ion-row>
+      </ion-grid>
+  </form>
+</ion-content>
