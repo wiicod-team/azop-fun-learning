@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {Auth} from "aws-amplify";
+import { AuthService } from '../services/auth.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -14,31 +15,58 @@ export class LoginPage implements OnInit {
     password: ''
   };
   error='';
-  async doLogin(form){
-    // console.log(this.login.phone)
-    try {
-        const user = await Auth.signIn(this.login.phone, this.login.password);
-        console.log("good login");
-        this.error='';
-        this.router.navigateByUrl('tabs/tabs/tab1');
-        
-    } catch (err) {
-        if (err.code === 'UserNotConfirmedException') {
-            this.error='User not confirmed';
-        } else if (err.code === 'PasswordResetRequiredException') {
-            this.error='Forgot Password part';
-        } else if (err.code === 'NotAuthorizedException') {
-            this.error='Incorrect password';
-        } else if (err.code === 'UserNotFoundException') {
-            this.error='Incorrect phone number';
-        } else {
-            console.log(err);
-        }
-        console.log(this.error)
-    }
+  loginForm:FormGroup;
+  validation_messages={
+    username:[
+      {
+        type:"required",
+        message:"Phone number is required"
+      },
+      {
+        type:"minlength",
+        message:"Phone number must be greater than 9 caracter"
+      },
+      {
+        type:"maxlength",
+        message:"Phone number must be less than 13 caracter"
+      }
+    ],
+    password:[
+      {
+        type:"required",
+        message:"Password is required"
+      },
+      {
+        type:"minlength",
+        message:"Password must be greater than 6 caracter"
+      }
+    ]
   }
-  constructor(private router: Router) { }
+
+  constructor(private router: Router, private auth: AuthService) { 
+    this.loginForm= new FormGroup({
+      username: new FormControl("",Validators.compose([Validators.required, Validators.minLength(9),Validators.maxLength(13)])),
+      password: new FormControl("",Validators.compose([Validators.required, Validators.minLength(6)]))
+    })
+  }
 
   ngOnInit() {
   }
+
+  doLogin(form){
+    console.log(this.loginForm.getRawValue());
+    
+    this.auth.signIn(this.loginForm.getRawValue())
+    .then(
+      data => {
+        this.error='';
+        this.router.navigateByUrl('/tabs/tabs/tab1');
+      }
+    )
+    .catch(err => {
+      console.log(err);
+      this.error=err.message;
+    });
+  }
+  
 }

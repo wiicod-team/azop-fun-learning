@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import {Router} from '@angular/router';
-import { Auth } from 'aws-amplify';
+import { AuthService } from '../services/auth.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {DataStore} from "@aws-amplify/datastore";
+import {Suggestion} from "../../models";
 
 @Component({
   selector: 'app-tab1',
@@ -9,22 +12,47 @@ import { Auth } from 'aws-amplify';
 })
 export class Tab1Page {
 
-  constructor(private router:Router) {}
-
-  logout(){
-    console.log("there logout");
-    Auth.currentAuthenticatedUser({
-      bypassCache: false  
-      // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
-    }).then(user => console.log(user))
-    .catch(err => console.log(err));
-
-    Auth.signOut({ global: true })
-    .then(
-      data => {
-        console.log(data);
-        this.router.navigateByUrl('/');
+  suggestionForm:FormGroup;
+  validation_messages={
+    title:[
+      {
+        type:"required",
+        message:"Title is required"
+      }
+    ],
+    description:[
+      {
+        type:"required",
+        message:"Description is required"
+      }
+    ],
+    status:[
+      {
+        type:"required",
+        message:"Status is required"
+      }
+    ],
+    suggestionscol:[
+      {
+        type:"required",
+        message:"Suggestion Col is required"
+      }
+    ]
+  }
+  constructor(private router:Router, private auth:AuthService) {
+    this.suggestionForm= new FormGroup({
+      title: new FormControl("",Validators.compose([Validators.required])),
+      description: new FormControl("",Validators.compose([Validators.required])),
+      status: new FormControl("",Validators.compose([Validators.required])),
+      suggestionscol: new FormControl("",Validators.compose([Validators.required]))
       })
-    .catch(err => console.log(err));
+  }
+
+  async createSuggestion(){
+    console.log(this.suggestionForm.getRawValue());
+    await DataStore.save(
+      new Suggestion(this.suggestionForm.getRawValue())
+    )
+    this.router.navigateByUrl('/tabs/tabs/tab2')
   }
 }

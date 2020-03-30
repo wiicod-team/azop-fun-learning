@@ -8,7 +8,7 @@
 
 <!-- <ion-content [fullscreen]="true"> -->
   <ion-content class="auth-form">
-    <ion-grid>
+    <!-- <ion-grid>
       <ion-row justify-content-center>
         <ion-col align-self-center >
           <div text-center>
@@ -17,6 +17,75 @@
           <ion-button (click)="logout()" expand="block" color="danger">Log Out</ion-button>
         </ion-col>
       </ion-row>
-    </ion-grid>
+    </ion-grid> -->
+    <form #form="ngForm" [formGroup]="suggestionForm" (ngSubmit)="createSuggestion()">
+      <ion-grid>
+          <ion-row justify-content-center>
+            <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+              <br>
+              <div padding>
+                <ion-item lines="full">
+                  <ion-label position="floating">Title</ion-label>
+                  <ion-input name="title" type="text" formControlName="title" required></ion-input>
+                </ion-item>
+                <div class="error-container">
+                  <ng-container *ngFor="let validation of validation_messages.title">
+                    <div class="error-message" *ngIf="suggestionForm.get('title').hasError(validation.type ) && (suggestionForm.get('title').dirty || suggestionForm.get('title').touched )" >
+                      <ion-icon name="information-circle-outline"></ion-icon>
+                      <span> {{validation.message}}</span>
+                    </div>
+                  </ng-container>
+                </div>
+
+                <ion-item lines="full">
+                  <ion-label position="floating">Description</ion-label>
+                  <ion-input name="description" type="text" formControlName="description" required></ion-input>
+                </ion-item>
+                <div class="error-container">
+                  <ng-container *ngFor="let validation of validation_messages.description">
+                    <div class="error-message" *ngIf="suggestionForm.get('description').hasError(validation.type ) && (suggestionForm.get('description').dirty || suggestionForm.get('description').touched )" >
+                      <ion-icon name="information-circle-outline"></ion-icon>
+                      <span> {{validation.message}}</span>
+                    </div>
+                  </ng-container>
+                </div>
+  
+                <ion-item lines="full">
+                  <ion-label position="floating">Status</ion-label>
+                  <ion-input name="status" type="text" formControlName="status" required></ion-input>
+                </ion-item>
+                <div class="error-container">
+                  <ng-container *ngFor="let validation of validation_messages.status">
+                    <div class="error-message" *ngIf="suggestionForm.get('status').hasError(validation.type ) && (suggestionForm.get('status').dirty || suggestionForm.get('status').touched )" >
+                      <ion-icon name="information-circle-outline"></ion-icon>
+                      <span> {{validation.message}}</span>
+                    </div>
+                  </ng-container>
+                </div>
+
+                <ion-item lines="full">
+                  <ion-label position="floating">Suggestion Col</ion-label>
+                  <ion-input name="suggestionscol" type="text" formControlName="suggestionscol" required></ion-input>
+                </ion-item>
+                <div class="error-container">
+                  <ng-container *ngFor="let validation of validation_messages.suggestionscol">
+                    <div class="error-message" *ngIf="suggestionForm.get('suggestionscol').hasError(validation.type ) && (suggestionForm.get('suggestionscol').dirty || suggestionForm.get('suggestionscol').touched )" >
+                      <ion-icon name="information-circle-outline"></ion-icon>
+                      <span> {{validation.message}}</span>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+              <br>
+              <div padding>
+                <ion-button  size="large" type="submit" [disabled]="!suggestionForm.valid" expand="block">Ok</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
+          <ion-row align-self-center size-md="6" size-lg="5" size-xs="12" color="danger">
+              <div text-center class="text error">{{error}}</div>
+          </ion-row>
+        </ion-grid>
+    </form>
   </ion-content>
 <!-- </ion-content> -->

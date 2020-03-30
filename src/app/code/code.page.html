@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content >
-  <form #form="ngForm" (ngSubmit)="verificationCode(form)">
+  <form #form="ngForm" [formGroup]="codeForm" (ngSubmit)="verificationCode(form)">
     <ion-grid>
       <ion-row  justify-content-center>
         <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
@@ -16,12 +16,29 @@
           <div padding>
             <ion-item lines="full">
               <ion-label position="floating">Phone number</ion-label>
-              <ion-input name="username" type="text" [(ngModel)]="code.username" ngModel required></ion-input>
+              <ion-input name="username" type="text" formControlName="username" required></ion-input>
             </ion-item>
+            <div class="error-container">
+              <ng-container *ngFor="let validation of validation_messages.username">
+                <div class="error-message" *ngIf="codeForm.get('username').hasError(validation.type ) && (codeForm.get('username').dirty || codeForm.get('username').touched )" >
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  <span> {{validation.message}}</span>
+                </div>
+              </ng-container>
+            </div>
+
             <ion-item lines="full">
               <ion-label position="floating">Code</ion-label>
-              <ion-input name="code" type="text" [(ngModel)]="code.code" ngModel required></ion-input>
+              <ion-input name="code" type="text" formControlName="code" required></ion-input>
             </ion-item>
+            <div class="error-container">
+              <ng-container *ngFor="let validation of validation_messages.code">
+                <div class="error-message" *ngIf="codeForm.get('code').hasError(validation.type ) && (codeForm.get('code').dirty || codeForm.get('code').touched )" >
+                  <ion-icon name="information-circle-outline"></ion-icon>
+                  <span> {{validation.message}}</span>
+                </div>
+              </ng-container>
+            </div>
           </div>
           <br>
           <div padding>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {Auth} from "aws-amplify";
+import { AuthService } from '../services/auth.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-code',
@@ -14,16 +15,48 @@ export class CodePage implements OnInit {
     "code":''
   }
   error='';
+  codeForm:FormGroup;
+  validation_messages={
+    username:[
+      {
+        type:"required",
+        message:"Phone number is required"
+      },
+      {
+        type:"minlength",
+        message:"Phone number must be greater than 9 caracter"
+      },
+      {
+        type:"maxlength",
+        message:"Phone number must be less than 13 caracter"
+      }
+    ],
+    code:[
+      {
+        type:"required",
+        message:"Code is required"
+      },
+      {
+        type:"minlength",
+        message:"Code must be greater than 6 caracter"
+      }
+    ]
+  }
+  
+  constructor(private router:Router, private auth: AuthService) { 
+    this.codeForm= new FormGroup({
+      username: new FormControl("",Validators.compose([Validators.required, Validators.minLength(9), Validators.maxLength(13)])),
+      code: new FormControl("",Validators.compose([Validators.required, Validators.minLength(6)]))
+    })
+  }
+
+  ngOnInit() {
+  }
+
   verificationCode(form){
-    console.log(form.value)
-    // After retrieving the confirmation code from the user
-    Auth.confirmSignUp(
-      this.code.username,
-      this.code.code, 
-    {
-      // Optional. Force user confirmation irrespective of existing alias. By default set to True.
-        forceAliasCreation: true    
-    }).then(
+    console.log(this.codeForm.getRawValue())
+    this.auth.confirmSignUp(this.codeForm.getRawValue().username, this.codeForm.getRawValue().code)
+    .then(
         data => {
           console.log(data);
           this.error='';
@@ -42,17 +75,15 @@ export class CodePage implements OnInit {
   }
   resend(){
     // console.log("ca marche");
-    Auth.resendSignUp(this.code.username).then(() => {
+    this.auth.resendSignUp(this.codeForm.getRawValue().username)
+      .then(() => {
         console.log('code resent successfully');
         this.error='code resent successfully';
-    }).catch(e => {
+      })
+      .catch(e => {
         console.log(e);
         this.error=e.message;
-    });
-  }
-  constructor(private router:Router) { }
-
-  ngOnInit() {
+      });
   }
 
 }

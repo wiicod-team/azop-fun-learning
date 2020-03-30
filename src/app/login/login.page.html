@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content >
-  <form #form="ngForm" (ngSubmit)="doLogin(form)">
+  <form #form="ngForm" [formGroup]="loginForm" (ngSubmit)="doLogin(form)">
     <ion-grid>
         <ion-row justify-content-center>
           <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
@@ -16,17 +16,33 @@
             <div padding>
               <ion-item lines="full">
                 <ion-label position="floating">Phone number</ion-label>
-                <ion-input name="phone" type="text" [(ngModel)]="login.phone" ngModel required></ion-input>
+                <ion-input name="phone" type="username" formControlName="username" required></ion-input>
               </ion-item>
+              <div class="error-container">
+                <ng-container *ngFor="let validation of validation_messages.username">
+                  <div class="error-message" *ngIf="loginForm.get('username').hasError(validation.type ) && (loginForm.get('username').dirty || loginForm.get('username').touched )" >
+                    <ion-icon name="information-circle-outline"></ion-icon>
+                    <span> {{validation.message}}</span>
+                  </div>
+                </ng-container>
+              </div>
 
               <ion-item lines="full">
                 <ion-label position="floating">Password</ion-label>
-                <ion-input name="password" type="password" [(ngModel)]="login.password" ngModel required></ion-input>
+                <ion-input name="password" type="password" formControlName="password" required></ion-input>
               </ion-item>
+              <div class="error-container">
+                <ng-container *ngFor="let validation of validation_messages.password">
+                  <div class="error-message" *ngIf="loginForm.get('password').hasError(validation.type ) && (loginForm.get('password').dirty || loginForm.get('password').touched )" >
+                    <ion-icon name="information-circle-outline"></ion-icon>
+                    <span> {{validation.message}}</span>
+                  </div>
+                </ng-container>
+              </div>
             </div>
             <br>
             <div padding>
-              <ion-button  size="large" type="submit"  [disabled]="form.invalid" expand="block">Sign In</ion-button>
+              <ion-button  size="large" type="submit" [disabled]="!loginForm.valid" expand="block">Sign In</ion-button>
             </div>
           </ion-col>
         </ion-row>
