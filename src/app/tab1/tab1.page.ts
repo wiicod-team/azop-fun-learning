@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import {Router} from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import {DataStore} from "@aws-amplify/datastore";
-import {Suggestion} from "../../models";
+// import {DataStore} from "@aws-amplify/datastore";
+// import {Suggestion} from "../../models";
 
 @Component({
   selector: 'app-tab1',
@@ -47,12 +47,12 @@ export class Tab1Page {
       suggestionscol: new FormControl("",Validators.compose([Validators.required]))
       })
   }
-
+  
   async createSuggestion(){
     console.log(this.suggestionForm.getRawValue());
-    await DataStore.save(
-      new Suggestion(this.suggestionForm.getRawValue())
-    )
+    // await DataStore.save(
+    //   new Suggestion(this.suggestionForm.getRawValue())
+    // )
     this.router.navigateByUrl('/tabs/tabs/tab2')
   }
 }
