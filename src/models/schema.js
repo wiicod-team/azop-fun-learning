@@ -1,9 +1,71 @@
 export const schema = {
     "models": {
-        "Suggestion": {
+        "User": {
+            "name": "User",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "firstName": {
+                    "name": "firstName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "lastName": {
+                    "name": "lastName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "avatar": {
+                    "name": "avatar",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "suggestions": {
+                    "name": "suggestions",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Suggestion"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "tribes": {
+                    "name": "tribes",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "TribeUser"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            },
             "syncable": true,
-            "name": "Suggestion",
-            "pluralName": "Suggestions",
+            "pluralName": "Users",
             "attributes": [
                 {
                     "type": "model",
@@ -29,16 +91,21 @@ export const schema = {
                                 "provider": "userPools",
                                 "allow": "groups",
                                 "groups": [
-                                    "Users"
+                                    "Admins"
                                 ],
                                 "operations": [
-                                    "read"
+                                    "create",
+                                    "update",
+                                    "delete"
                                 ]
                             }
                         ]
                     }
                 }
-            ],
+            ]
+        },
+        "Question": {
+            "name": "Question",
             "fields": {
                 "id": {
                     "name": "id",
@@ -54,33 +121,75 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "description": {
-                    "name": "description",
+                "type": {
+                    "name": "type",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "enum": "QuestionType"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "asset": {
+                    "name": "asset",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "File"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "languageID": {
+                    "name": "languageID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "question_template": {
+                    "name": "question_template",
+                    "isArray": false,
+                    "type": {
+                        "enum": "QuestionTemplate"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "answers": {
+                    "name": "answers",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Answer"
+                    },
                     "isRequired": true,
                     "attributes": []
                 },
                 "status": {
                     "name": "status",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "enum": "QuestionStatus"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
                     "isRequired": false,
                     "attributes": []
                 },
-                "suggestionscol": {
-                    "name": "suggestionscol",
+                "updatedAt": {
+                    "name": "updatedAt",
                     "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
                     "attributes": []
                 }
-            }
-        },
-        "User": {
+            },
             "syncable": true,
-            "name": "User",
-            "pluralName": "Users",
+            "pluralName": "Questions",
             "attributes": [
                 {
                     "type": "model",
@@ -94,12 +203,12 @@ export const schema = {
                                 "provider": "userPools",
                                 "ownerField": "owner",
                                 "allow": "owner",
+                                "identityClaim": "cognito:username",
                                 "operations": [
-                                    "read",
+                                    "create",
                                     "update",
                                     "delete"
-                                ],
-                                "identityClaim": "cognito:username"
+                                ]
                             },
                             {
                                 "groupClaim": "cognito:groups",
@@ -117,7 +226,10 @@ export const schema = {
                         ]
                     }
                 }
-            ],
+            ]
+        },
+        "Tribe": {
+            "name": "Tribe",
             "fields": {
                 "id": {
                     "name": "id",
@@ -126,32 +238,126 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "first_name": {
-                    "name": "first_name",
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "symbol": {
+                    "name": "symbol",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "File"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "last_name": {
-                    "name": "last_name",
+                "country": {
+                    "name": "country",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "nonModel": "Country"
+                    },
                     "isRequired": false,
                     "attributes": []
                 },
-                "avatar": {
-                    "name": "avatar",
+                "localization": {
+                    "name": "localization",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "GeoPosition"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "users": {
+                    "name": "users",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "TribeUser"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "customs": {
+                    "name": "customs",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Custom"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "proverbs": {
+                    "name": "proverbs",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Proverb"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "songs": {
+                    "name": "songs",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Song"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "names": {
+                    "name": "names",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Name"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "languages": {
+                    "name": "languages",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Language"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "legends": {
+                    "name": "legends",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Legend"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
                     "isArray": false,
-                    "type": "String",
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
                     "isRequired": false,
                     "attributes": []
                 }
-            }
-        },
-        "Tribe": {
+            },
             "syncable": true,
-            "name": "Tribe",
             "pluralName": "Tribes",
             "attributes": [
                 {
@@ -178,93 +384,101 @@ export const schema = {
                         ]
                     }
                 }
-            ],
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "symbol": {
-                    "name": "symbol",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "description": {
-                    "name": "description",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "localization": {
-                    "name": "localization",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "tribescol": {
-                    "name": "tribescol",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            }
+            ]
+        }
+    },
+    "enums": {
+        "SuggestionStatus": {
+            "name": "SuggestionStatus",
+            "values": [
+                "NEW",
+                "PENDING",
+                "ACCEPTED",
+                "REJECTED"
+            ]
         },
-        "Custom": {
-            "syncable": true,
-            "name": "Custom",
-            "pluralName": "Customs",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Users"
-                                ],
-                                "operations": [
-                                    "read"
-                                ]
-                            },
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Admins"
-                                ],
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ],
+        "TribeRole": {
+            "name": "TribeRole",
+            "values": [
+                "TCHINDA",
+                "NOTABLE",
+                "BOMBOCK"
+            ]
+        },
+        "QuestionType": {
+            "name": "QuestionType",
+            "values": [
+                "TEXT",
+                "IMAGE",
+                "AUDIO",
+                "VIDEO"
+            ]
+        },
+        "FileType": {
+            "name": "FileType",
+            "values": [
+                "TXT",
+                "PNG",
+                "JPG",
+                "MP3",
+                "OGG",
+                "WAV",
+                "WEBM",
+                "MPEG",
+                "AVI",
+                "FLV",
+                "MOV",
+                "MP4",
+                "M4V"
+            ]
+        },
+        "QuestionTemplate": {
+            "name": "QuestionTemplate",
+            "values": [
+                "DEFINITION",
+                "TRANSLATION",
+                "INTEPRETATION"
+            ]
+        },
+        "AnswerStatus": {
+            "name": "AnswerStatus",
+            "values": [
+                "NEW",
+                "PENDING",
+                "ACCEPTED",
+                "REJECTED"
+            ]
+        },
+        "QuestionStatus": {
+            "name": "QuestionStatus",
+            "values": [
+                "NEW",
+                "PENDING",
+                "ANSWERED",
+                "CLOSED"
+            ]
+        },
+        "CustomType": {
+            "name": "CustomType",
+            "values": [
+                "MARRIAGE",
+                "BIRTH",
+                "DEATH"
+            ]
+        },
+        "CustomStatus": {
+            "name": "CustomStatus",
+            "values": [
+                "NEW",
+                "PENDING",
+                "ACCEPTED",
+                "REJECTED"
+            ]
+        }
+    },
+    "nonModels": {
+        "Suggestion": {
+            "name": "Suggestion",
             "fields": {
                 "id": {
                     "name": "id",
@@ -284,55 +498,349 @@ export const schema = {
                     "name": "description",
                     "isArray": false,
                     "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": {
+                        "enum": "SuggestionStatus"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "TribeUser": {
+            "name": "TribeUser",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "tribeId": {
+                    "name": "tribeId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "userId": {
+                    "name": "userId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "tribeName": {
+                    "name": "tribeName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "userName": {
+                    "name": "userName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "role": {
+                    "name": "role",
+                    "isArray": false,
+                    "type": {
+                        "enum": "TribeRole"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "File": {
+            "name": "File",
+            "fields": {
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": {
+                        "enum": "FileType"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "url": {
+                    "name": "url",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "size": {
+                    "name": "size",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "Answer": {
+            "name": "Answer",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": {
+                        "enum": "AnswerStatus"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": {
+                        "enum": "QuestionType"
+                    },
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "title": {
+                    "name": "title",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "vote": {
+                    "name": "vote",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "user": {
+                    "name": "user",
+                    "isArray": false,
+                    "type": {
+                        "model": "User"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "Country": {
+            "name": "Country",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "GeoPosition": {
+            "name": "GeoPosition",
+            "fields": {
+                "lat": {
+                    "name": "lat",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "long": {
+                    "name": "long",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "Custom": {
+            "name": "Custom",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "tribeID": {
+                    "name": "tribeID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": {
+                        "enum": "CustomType"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "title": {
+                    "name": "title",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": {
+                        "enum": "CustomStatus"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
                     "isRequired": false,
                     "attributes": []
                 }
             }
         },
         "Proverb": {
-            "syncable": true,
             "name": "Proverb",
-            "pluralName": "Proverbs",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Users"
-                                ],
-                                "operations": [
-                                    "read"
-                                ]
-                            },
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Admins"
-                                ],
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ],
             "fields": {
                 "id": {
                     "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "tribeID": {
+                    "name": "tribeID",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -365,53 +873,35 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
                 }
             }
         },
-        "Son": {
-            "syncable": true,
-            "name": "Son",
-            "pluralName": "Sons",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Users"
-                                ],
-                                "operations": [
-                                    "read"
-                                ]
-                            },
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Admins"
-                                ],
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ],
+        "Song": {
+            "name": "Song",
             "fields": {
                 "id": {
                     "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "tribeID": {
+                    "name": "tribeID",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -431,353 +921,41 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "sons": {
-                    "name": "sons",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                }
-            }
-        },
-        "Language": {
-            "syncable": true,
-            "name": "Language",
-            "pluralName": "Languages",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Users"
-                                ],
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ],
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
+                "songs": {
+                    "name": "songs",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
                     "attributes": []
                 },
-                "description": {
-                    "name": "description",
+                "createdAt": {
+                    "name": "createdAt",
                     "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                }
-            }
-        },
-        "Question": {
-            "syncable": true,
-            "name": "Question",
-            "pluralName": "Questions",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Users"
-                                ],
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ],
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
                     "attributes": []
                 },
-                "question_template": {
-                    "name": "question_template",
+                "updatedAt": {
+                    "name": "updatedAt",
                     "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "answers": {
-                    "name": "answers",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "status": {
-                    "name": "status",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "questionscol": {
-                    "name": "questionscol",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                }
-            }
-        },
-        "Alphabet": {
-            "syncable": true,
-            "name": "Alphabet",
-            "pluralName": "Alphabets",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Admins"
-                                ],
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ],
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "symbols": {
-                    "name": "symbols",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "sons": {
-                    "name": "sons",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "order": {
-                    "name": "order",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                }
-            }
-        },
-        "Dictionary": {
-            "syncable": true,
-            "name": "Dictionary",
-            "pluralName": "Dictionaries",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Admins"
-                                ],
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ],
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "words": {
-                    "name": "words",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                }
-            }
-        },
-        "Sentence": {
-            "syncable": true,
-            "name": "Sentence",
-            "pluralName": "Sentences",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Admins"
-                                ],
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ],
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "sentence": {
-                    "name": "sentence",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "translations": {
-                    "name": "translations",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "track": {
-                    "name": "track",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "sentencescol": {
-                    "name": "sentencescol",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
                     "attributes": []
                 }
             }
         },
         "Name": {
-            "syncable": true,
             "name": "Name",
-            "pluralName": "Names",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Admins"
-                                ],
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ],
             "fields": {
                 "id": {
                     "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "tribeID": {
+                    "name": "tribeID",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -803,50 +981,376 @@ export const schema = {
                     "type": "String",
                     "isRequired": true,
                     "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "Language": {
+            "name": "Language",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "tribeID": {
+                    "name": "tribeID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "questions": {
+                    "name": "questions",
+                    "isArray": true,
+                    "type": {
+                        "model": "Question"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "alphabets": {
+                    "name": "alphabets",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Alphabet"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "dictionaries": {
+                    "name": "dictionaries",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Dictionary"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "sentences": {
+                    "name": "sentences",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Sentence"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "Alphabet": {
+            "name": "Alphabet",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "languageID": {
+                    "name": "languageID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "letters": {
+                    "name": "letters",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Letter"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "Letter": {
+            "name": "Letter",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "symbol": {
+                    "name": "symbol",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "order": {
+                    "name": "order",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "pronociation": {
+                    "name": "pronociation",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "File"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "Dictionary": {
+            "name": "Dictionary",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "languageID": {
+                    "name": "languageID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "words": {
+                    "name": "words",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Word"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "Word": {
+            "name": "Word",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "title": {
+                    "name": "title",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "prononciation": {
+                    "name": "prononciation",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "File"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "meaning": {
+                    "name": "meaning",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "picture": {
+                    "name": "picture",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "File"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "usages": {
+                    "name": "usages",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Sentence"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "Sentence": {
+            "name": "Sentence",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "languageID": {
+                    "name": "languageID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "languageName": {
+                    "name": "languageName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "title": {
+                    "name": "title",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "translations": {
+                    "name": "translations",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "track": {
+                    "name": "track",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
                 }
             }
         },
         "Legend": {
-            "syncable": true,
             "name": "Legend",
-            "pluralName": "Legends",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Users"
-                                ],
-                                "operations": [
-                                    "read"
-                                ]
-                            },
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Admins"
-                                ],
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ],
             "fields": {
                 "id": {
                     "name": "id",
@@ -882,39 +1386,32 @@ export const schema = {
                     "type": "String",
                     "isRequired": true,
                     "attributes": []
+                },
+                "tribeIds": {
+                    "name": "tribeIds",
+                    "isArray": true,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
                 }
             }
         },
         "History": {
-            "syncable": true,
             "name": "History",
-            "pluralName": "Histories",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Admins"
-                                ],
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ],
             "fields": {
                 "id": {
                     "name": "id",
@@ -950,10 +1447,32 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
+                },
+                "legends": {
+                    "name": "legends",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Legend"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
                 }
             }
         }
     },
-    "enums": {},
-    "version": "699d230567256266c814c42adce19b88"
+    "version": "8047ad85ef835a96cb088f013bb1def3"
 };
