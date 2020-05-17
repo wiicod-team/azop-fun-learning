@@ -8,16 +8,12 @@
 
 <!-- <ion-content [fullscreen]="true"> -->
   <ion-content class="auth-form">
-    <!-- <ion-grid>
-      <ion-row justify-content-center>
-        <ion-col align-self-center >
-          <div text-center>
-            <h3 class="title">Vous vous etes bien connecté bienvenue dans l'application Fun-Learning</h3>
-          </div>
-          <ion-button (click)="logout()" expand="block" color="danger">Log Out</ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid> -->
+    <div text-center>
+      <!-- <h5 class="title">{{phone}}</h5>
+      
+      <h5 class="title">{{myid}}</h5>
+      <h5 class="title">{{user.username}}</h5> -->
+    </div>
     <form #form="ngForm" [formGroup]="suggestionForm" (ngSubmit)="createSuggestion()">
       <ion-grid>
           <ion-row justify-content-center>

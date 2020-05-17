@@ -1,0 +1,309 @@
+type Suggestion {
+    id: ID!
+    title: String!
+    description: String!
+    status: SUGGESTION_STATUS
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type User
+@model
+@auth(rules: [
+    {allow: owner},
+    {allow: groups, groups: ["Admins"]}
+]) {
+    id: ID!
+    firstName: String
+    lastName: String
+    avatar: String
+    suggestions: [Suggestion]
+    tribes: [TribeUser]
+    questions:[Question]
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type TribeUser {
+    id: ID!
+    tribeId: ID
+    userId: ID
+    tribeName: String
+    userName: String
+    role: TRIBE_ROLE!
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Tribe
+@model
+@auth(rules: [
+    {allow: groups, groups: ["Admins"]}
+]) {
+    id: ID!
+    name: String!
+    symbol: File
+    description: String
+    country: Country
+    localization: [GeoPosition]
+    tribes: [Tribe]
+    users: [TribeUser]
+    customs: [Custom]
+    proverbs: [Proverb]
+    songs: [Song]
+    names: [Name]
+    languages: [Language]
+    legends: [Legend]
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Country {
+    id: ID!
+    name: String!
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Custom {
+    id: ID!
+    tribeID: ID!
+    type: CUSTOM_TYPE
+    title: String!
+    description: AWSJSON
+    status: CUSTOM_STATUS
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Proverb {
+    id: ID!
+    tribeID: ID!
+    title: String!
+    meaning: String!
+    content: String!
+    track: String
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Song {
+    id: ID!
+    tribeID: ID!
+    title: String!
+    lyric: String!
+    songs: String!
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Name {
+    id: ID!
+    tribeID: ID!
+    name: String!
+    gender: String!
+    signification: String!
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Language {
+    id: ID!
+    tribeID: ID!
+    name: String!
+    description: String!
+    questions: [Question]
+    alphabets: [Alphabet]
+    dictionaries: [Dictionary]
+    sentences: [Sentence]
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Question
+@model
+@auth(rules: [
+    {allow: owner},
+    {allow: groups, groups: ["Admins"]}
+]) {
+    id: ID!
+    title:String!
+    type:QUESTION_TYPE!
+    asset:File
+    languageID: ID!
+    question_template: QUESTION_TEMPLATE!
+    answers: [Answer]!
+    status: QUESTION_STATUS!
+    user:User
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Answer {
+    id: ID!
+    status:ANSWER_STATUS
+    type:QUESTION_TYPE!
+    title:String!
+    vote:Int
+    user:User
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Alphabet {
+    id: ID!
+    languageID: ID!
+    letters: [Letter]
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Letter {
+    id: ID!
+    symbol: String!
+    order: Int!
+    pronociation: File
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Dictionary {
+    id: ID!
+    languageID: ID!
+    name: String!
+    words: [Word]
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Word {
+    id: ID!
+    title: String!
+    prononciation: File
+    meaning: String!
+    picture: File
+    usages: [Sentence]
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Sentence {
+    id: ID!
+    languageID: ID!
+    languageName: String
+    title: String!
+    translations: AWSJSON
+    track: String!
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Legend {
+    id: ID!
+    name: String!
+    surname: String!
+    birthdate: String!
+    picture: String!
+    tribeIds:[ID!]
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type History {
+    id: ID!
+    title: String!
+    content: String!
+    start_at: String
+    end_at: String
+    legends: [Legend]
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+# ===================================================assets types===================================
+
+type GeoPosition{
+    lat: Float!
+    long: Float!
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type File{
+    type: FILE_TYPE
+    url: String
+    size: Float
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+#==========================================enum=====================================
+
+enum SUGGESTION_STATUS {
+    NEW
+    PENDING
+    ACCEPTED
+    REJECTED
+}
+
+enum ANSWER_STATUS {
+    NEW
+    PENDING
+    ACCEPTED
+    REJECTED
+}
+
+enum QUESTION_STATUS {
+    NEW
+    PENDING
+    ANSWERED
+    CLOSED
+}
+
+enum QUESTION_TEMPLATE {
+    DEFINITION
+    TRANSLATION
+    INTEPRETATION
+}
+
+enum QUESTION_TYPE{
+    TEXT
+    IMAGE
+    AUDIO
+    VIDEO
+}
+
+enum TRIBE_ROLE{
+    TCHINDA
+    NOTABLE
+    BOMBOCK
+}
+
+enum CUSTOM_TYPE{
+    MARRIAGE
+    BIRTH
+    DEATH
+}
+
+enum CUSTOM_STATUS {
+    NEW
+    PENDING
+    ACCEPTED
+    REJECTED
+}
+
+enum FILE_TYPE{
+    TXT
+    PNG
+    JPG
+    MP3
+    OGG
+    WAV
+    WEBM
+    MPEG
+    AVI
+    FLV
+    MOV
+    MP4
+    M4V
+}

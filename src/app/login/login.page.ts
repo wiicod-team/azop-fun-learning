@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {DataStore} from "@aws-amplify/datastore";
+import {User} from "../../models";
+
 
 @Component({
   selector: 'app-login',
@@ -58,9 +61,19 @@ export class LoginPage implements OnInit {
     
     this.auth.signIn(this.loginForm.getRawValue())
     .then(
-      data => {
+      async data => {
+        console.log(data);
         this.error='';
-        this.router.navigateByUrl('/tabs/tabs/tab1');
+        const u = new User({
+          firstName:this.loginForm.getRawValue().username,
+          // firstName:data.username,
+          lastName:this.loginForm.getRawValue().username
+          // avatar:this.loginForm.getRawValue().password,
+          // suggestions:[]
+        })
+        
+        await DataStore.save(u);
+        // this.router.navigateByUrl('/tabs/tabs/tab1');
       }
     )
     .catch(err => {

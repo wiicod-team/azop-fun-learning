@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {DataStore} from "@aws-amplify/datastore";
+import {User} from "../../models";
 
 @Component({
   selector: 'app-register',
@@ -69,16 +71,25 @@ export class RegisterPage implements OnInit {
   doRegister(form){
     // console.log(this.registerForm.getRawValue());
     const credentials={
-      username:this.register.phone, 
+      username:this.register.username, 
       password:this.register.password, 
       attributes:{
         email:this.register.email
       }
     }
+    
     this.auth.signUp(this.registerForm.getRawValue())
     .then(
-      data => {
+      async (data) => {
         this.error='';
+        const u = new User({
+          firstName:this.registerForm.getRawValue().username,
+          lastName:this.registerForm.getRawValue().username,
+          avatar:this.registerForm.getRawValue().email,
+          suggestions:[]
+        })
+        
+        await DataStore.save(u);
         this.router.navigateByUrl('/code');
       }
     )

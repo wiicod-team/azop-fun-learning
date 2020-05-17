@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import {Router} from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-// import {DataStore} from "@aws-amplify/datastore";
-// import {Suggestion} from "../../models";
+import {DataStore} from "@aws-amplify/datastore";
+import {Suggestion, User} from "../../models";
+import {Auth} from 'aws-amplify';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'app-tab1',
@@ -39,6 +41,10 @@ export class Tab1Page {
       }
     ]
   }
+  user='';
+  phone = '';
+  username='';
+  myid = uuid.v4();
   constructor(private router:Router, private auth:AuthService) {
     this.suggestionForm= new FormGroup({
       title: new FormControl("",Validators.compose([Validators.required])),
@@ -46,13 +52,42 @@ export class Tab1Page {
       status: new FormControl("",Validators.compose([Validators.required])),
       suggestionscol: new FormControl("",Validators.compose([Validators.required]))
       })
+
+      Auth.currentAuthenticatedUser({
+        bypassCache: false  
+      }).then(
+        (user)=>{
+          console.log(user);
+          this.user=user;
+          this.phone=user.attributes["phone_number"];
+          this.username=user.username;
+        })
+      .catch(err => console.log(err));
+      this.list();
   }
   
   async createSuggestion(){
-    console.log(this.suggestionForm.getRawValue());
-    // await DataStore.save(
-    //   new Suggestion(this.suggestionForm.getRawValue())
-    // )
+    const suggestion=this.suggestionForm.getRawValue();
+
+    const Users = await DataStore.query<User>(User, c =>c.firstName("eq", this.username));
+
+    await DataStore.save(
+      User.copyOf(Users[0], updated => {
+        updated.suggestions=[
+          {
+            id : this.myid,
+            title : suggestion.title,
+            description : suggestion.description,
+            status : suggestion.status
+          }
+        ]
+      })
+    );
     this.router.navigateByUrl('/tabs/tabs/tab2')
+  }
+
+  async list(){
+    const utilisateur = await DataStore.query<User>(User);
+    console.log(utilisateur);
   }
 }

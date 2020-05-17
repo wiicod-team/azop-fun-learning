@@ -1,0 +1,20 @@
+{
+    "worldev": {
+        "awscloudformation": {
+            "AuthRoleName": "azop-server-worldev-20200206190858-authRole",
+            "UnauthRoleArn": "arn:aws:iam::851610601300:role/azop-server-worldev-20200206190858-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::851610601300:role/azop-server-worldev-20200206190858-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "azop-server-worldev-20200206190858-deployment",
+            "UnauthRoleName": "azop-server-worldev-20200206190858-unauthRole",
+            "StackName": "azop-server-worldev-20200206190858",
+            "StackId": "arn:aws:cloudformation:us-east-1:851610601300:stack/azop-server-worldev-20200206190858/c686eaa0-490b-11ea-a8c5-12c270bd7978",
+            "AmplifyAppId": "dafiqaqd25sx0"
+        },
+        "categories": {
+            "auth": {
+                "azopserverd7be190a": {}
+            }
+        }
+    }
+}
