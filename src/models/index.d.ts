@@ -95,6 +95,8 @@ export declare class File {
   readonly type?: FileType | keyof typeof FileType;
   readonly url?: string;
   readonly size?: number;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
   constructor(init: ModelInit<File>);
 }
 
@@ -113,12 +115,16 @@ export declare class Answer {
 export declare class Country {
   readonly id: string;
   readonly name: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
   constructor(init: ModelInit<Country>);
 }
 
 export declare class GeoPosition {
   readonly lat: number;
   readonly long: number;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
   constructor(init: ModelInit<GeoPosition>);
 }
 
@@ -196,6 +202,8 @@ export declare class Letter {
   readonly symbol: string;
   readonly order: number;
   readonly pronociation?: File;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
   constructor(init: ModelInit<Letter>);
 }
 
@@ -216,6 +224,8 @@ export declare class Word {
   readonly meaning: string;
   readonly picture?: File;
   readonly usages?: Sentence[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
   constructor(init: ModelInit<Word>);
 }
 
@@ -250,6 +260,8 @@ export declare class History {
   readonly start_at?: string;
   readonly end_at?: string;
   readonly legends?: Legend[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
   constructor(init: ModelInit<History>);
 }
 
@@ -260,6 +272,8 @@ export declare class User {
   readonly avatar?: string;
   readonly suggestions?: Suggestion[];
   readonly tribes?: TribeUser[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
   constructor(init: ModelInit<User>);
   static copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
 }

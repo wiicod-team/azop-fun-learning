@@ -8,17 +8,20 @@ const SuggestionStatus = {
   "ACCEPTED": "ACCEPTED",
   "REJECTED": "REJECTED"
 };
+
 const TribeRole = {
   "TCHINDA": "TCHINDA",
   "NOTABLE": "NOTABLE",
   "BOMBOCK": "BOMBOCK"
 };
+
 const QuestionType = {
   "TEXT": "TEXT",
   "IMAGE": "IMAGE",
   "AUDIO": "AUDIO",
   "VIDEO": "VIDEO"
 };
+
 const FileType = {
   "TXT": "TXT",
   "PNG": "PNG",
@@ -34,28 +37,33 @@ const FileType = {
   "MP4": "MP4",
   "M4_V": "M4V"
 };
+
 const QuestionTemplate = {
   "DEFINITION": "DEFINITION",
   "TRANSLATION": "TRANSLATION",
   "INTEPRETATION": "INTEPRETATION"
 };
+
 const AnswerStatus = {
   "NEW": "NEW",
   "PENDING": "PENDING",
   "ACCEPTED": "ACCEPTED",
   "REJECTED": "REJECTED"
 };
+
 const QuestionStatus = {
   "NEW": "NEW",
   "PENDING": "PENDING",
   "ANSWERED": "ANSWERED",
   "CLOSED": "CLOSED"
 };
+
 const CustomType = {
   "MARRIAGE": "MARRIAGE",
   "BIRTH": "BIRTH",
   "DEATH": "DEATH"
 };
+
 const CustomStatus = {
   "NEW": "NEW",
   "PENDING": "PENDING",
