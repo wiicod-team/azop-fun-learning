@@ -48,6 +48,20 @@ export const schema = {
                     },
                     "isRequired": false,
                     "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -189,12 +203,12 @@ export const schema = {
                                 "provider": "userPools",
                                 "ownerField": "owner",
                                 "allow": "owner",
+                                "identityClaim": "cognito:username",
                                 "operations": [
-                                    "read",
+                                    "create",
                                     "update",
                                     "delete"
-                                ],
-                                "identityClaim": "cognito:username"
+                                ]
                             },
                             {
                                 "groupClaim": "cognito:groups",
@@ -546,22 +560,6 @@ export const schema = {
                 "userName": {
                     "name": "userName",
                     "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "role": {
-                    "name": "role",
-                    "isArray": false,
-                    "type": {
-                        "enum": "TribeRole"
-                    },
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
                     "type": "AWSDateTime",
                     "isRequired": false,
                     "attributes": []
@@ -621,6 +619,20 @@ export const schema = {
                     "name": "size",
                     "isArray": false,
                     "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
                     "isRequired": false,
                     "attributes": []
                 }
@@ -741,6 +753,20 @@ export const schema = {
                     "isArray": false,
                     "type": "Float",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
                     "attributes": []
                 }
             }
@@ -945,7 +971,7 @@ export const schema = {
                 "name": {
                     "name": "name",
                     "isArray": false,
-                    "type": "String",
+                    "type": "ID",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -1136,6 +1162,20 @@ export const schema = {
                     },
                     "isRequired": false,
                     "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
                 }
             }
         },
@@ -1236,6 +1276,20 @@ export const schema = {
                     "type": {
                         "nonModel": "Sentence"
                     },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
                     "isRequired": false,
                     "attributes": []
                 }
@@ -1409,9 +1463,23 @@ export const schema = {
                     },
                     "isRequired": false,
                     "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
                 }
             }
         }
     },
-    "version": "3e617bc0dde9099afe0df078097973ee"
+    "version": "8047ad85ef835a96cb088f013bb1def3"
 };

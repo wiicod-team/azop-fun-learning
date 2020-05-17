@@ -1,8 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 node_modules/
 azop-fun-learning/
 =======
 
+=======
+>>>>>>> 02bfc9574084d72eac4e2a5c80e68f3badce1b1b
 
 #amplify
 amplify/\#current-cloud-backend
@@ -18,4 +21,7 @@ awsconfiguration.json
 amplifyconfiguration.json
 amplify-gradle-config.json
 amplifyxc.config
+<<<<<<< HEAD
 >>>>>>> 58d9faca974280406215bc4fac5bad7ffa9ec5a0
+=======
+>>>>>>> 02bfc9574084d72eac4e2a5c80e68f3badce1b1b
